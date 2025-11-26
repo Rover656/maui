@@ -47,6 +47,7 @@ public class Issue30565 : _IssuesUITest
 		App.WaitForElement("SettingsTabLabel");
 
 		// Now log out and log back in to ensure the navigation updates correctly
+		// Navigate back to Home tab since logout button is only on that tab
 		App.Tap("HomeTab");
 		App.WaitForElement("LogoutButton");
 		App.Tap("LogoutButton");

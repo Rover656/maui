@@ -59,6 +59,7 @@ public class Issue30565 : Shell
 		};
 
 		// Create 5 tabs for the "logged in" state - this matches the Android bottom navigation bar limit
+		// Note: Only the Home tab contains the logout button for simplicity in the test scenario
 		_homeTab = CreateTab("Home", "HomeTab", logoutButton);
 		_searchTab = CreateTab("Search", "SearchTab");
 		_favoritesTab = CreateTab("Favorites", "FavoritesTab");
