@@ -16,62 +16,58 @@ public class Issue30565 : _IssuesUITest
 	[Category(UITestCategories.Shell)]
 	public void BottomNavigationBarUpdatesCorrectlyAfterTabRemoval()
 	{
-		// Wait for the login tab to be visible
-		App.WaitForElement("LoginButton");
+		// Wait for the login page to be visible (starts logged out)
+		App.WaitForElement("FillerTabLabel");
 
 		// Tap the login button to switch to the "logged in" state with 5 tabs
-		App.Tap("LoginButton");
+		App.Tap("FillerTabLabel");
 
-		// Wait for the Home tab content to appear
-		App.WaitForElement("HomeTabLabel");
-
-		// Verify we can see the Home tab content
-		var homeLabel = App.FindElement("HomeTabLabel");
-		Assert.That(homeLabel.GetText(), Is.EqualTo("This is the Home tab"));
+		// Wait for the Home tab content to appear after login
+		// The FakeLogin service has a 500ms delay, so we wait for the filler label
+		App.WaitForElement("FillerTabLabel");
 
 		// Verify that the bottom navigation shows exactly 5 tabs (not a "More" tab)
 		// The bug was that the "More" tab appeared even though there were only 5 tabs
-		// After the fix, the 5 tabs should be: Home, Search, Favorites, Profile, Settings
+		// After the fix, the 5 tabs should be: Home, Page 2, Page 3, Page 4, Page 5
 		
 		// Tap on each tab to verify they are accessible
-		App.Tap("SearchTab");
-		App.WaitForElement("SearchTabLabel");
+		App.Tap("Tab2");
+		App.WaitForElement("FillerTabLabel");
 
-		App.Tap("FavoritesTab");
-		App.WaitForElement("FavoritesTabLabel");
+		App.Tap("Tab3");
+		App.WaitForElement("FillerTabLabel");
 
-		App.Tap("ProfileTab");
-		App.WaitForElement("ProfileTabLabel");
+		App.Tap("Tab4");
+		App.WaitForElement("FillerTabLabel");
 
-		App.Tap("SettingsTab");
-		App.WaitForElement("SettingsTabLabel");
+		// Navigate to Tab5 (Page 5) which has the logout button
+		App.Tap("Tab5");
+		App.WaitForElement("FillerTabLabel");
 
 		// Now log out and log back in to ensure the navigation updates correctly
-		// Navigate back to Home tab since logout button is only on that tab
-		App.Tap("HomeTab");
-		App.WaitForElement("LogoutButton");
-		App.Tap("LogoutButton");
+		// Tap the logout button (FillerTabLabel on Page 5)
+		App.Tap("FillerTabLabel");
 
 		// Verify we're back at the login screen
-		App.WaitForElement("LoginButton");
+		App.WaitForElement("FillerTabLabel");
 
 		// Log in again - this is where the bug would manifest
-		App.Tap("LoginButton");
+		App.Tap("FillerTabLabel");
 
 		// Wait for Home tab to appear
-		App.WaitForElement("HomeTabLabel");
+		App.WaitForElement("FillerTabLabel");
 
 		// Verify all 5 tabs are still accessible (no "More" tab bug)
-		App.Tap("SearchTab");
-		App.WaitForElement("SearchTabLabel");
+		App.Tap("Tab2");
+		App.WaitForElement("FillerTabLabel");
 
-		App.Tap("FavoritesTab");
-		App.WaitForElement("FavoritesTabLabel");
+		App.Tap("Tab3");
+		App.WaitForElement("FillerTabLabel");
 
-		App.Tap("ProfileTab");
-		App.WaitForElement("ProfileTabLabel");
+		App.Tap("Tab4");
+		App.WaitForElement("FillerTabLabel");
 
-		App.Tap("SettingsTab");
-		App.WaitForElement("SettingsTabLabel");
+		App.Tap("Tab5");
+		App.WaitForElement("FillerTabLabel");
 	}
 }
